@@ -1,0 +1,10 @@
+# Ignore the entire build directory
+build/
+
+# Ignore local VS Code settings
+.vscode/
+
+# Ignore any compiled executables or objects that sneak through
+*.exe
+*.o
+*.obj
