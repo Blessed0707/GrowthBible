@@ -1,15 +1,21 @@
 #include <string>
-#include <vector>
-#include <fstream>
-#include <iostream>
+#include "sqlite.hpp"
+#include "VerseFinder.hpp"  // ← must include the parent
 
-using std::string;
-using std::vector;
-
-class DailyVerse
+class DailyVerse : public VerseFinder  // ← inherits from VerseFinder
 {
-    public:
+public:
+    /**
+     * @brief Constructs a DailyVerse instance bound to an open database wrapper.
+     * @param db Reference to an initialized SqliteDb object.
+     */
+    DailyVerse(SqliteDb& db);
 
-    private:
-    
+    /**
+     * @brief Fetches a random verse from the database.
+     */
+    void getRandomVerse();
+
+private:
+    SqliteDb& mDbRef;
 };

@@ -6,6 +6,8 @@
  * @class VerseFinder
  * @brief Handles querying and extracting scripture text from the database.
  */
+
+
 class VerseFinder {
 private:
     SqliteDb& mDbRef; ///< Reference to the active database connection wrapper
@@ -25,3 +27,4 @@ public:
      */
     void fetchVerse(const std::string& bookName, int chapter, int verseNum);
 };
+
