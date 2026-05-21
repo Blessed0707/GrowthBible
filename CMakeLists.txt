@@ -27,7 +27,8 @@ file(GLOB_RECURSE TEST_FILES "src_tests/*.cpp")
 # =================================================================
 # TARGET 1: THE MAIN APP
 # =================================================================
-add_executable(MyExecutable main.cpp ${SRC_FILES})
+add_executable(MyExecutable main.cpp ${SRC_FILES}
+    src/features/verse/WordSearch.cpp)
 
 target_include_directories(MyExecutable PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes"

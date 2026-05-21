@@ -1,4 +1,4 @@
-#include "bookmap.hpp"
+#include "BookMap.hpp"
 
 // Look-up map matching human-readable book titles to unique database primary keys
 const std::unordered_map<std::string, int> BookIdMap::mBookMap = {
@@ -27,3 +27,15 @@ std::optional<int> BookIdMap::getBookID(const std::string bookName) {
         return std::nullopt; // Return nullopt if the book name is not found
     }
 }
+
+std::optional<std::string> BookIdMap::getBookName(const int bookId) {
+    // Loop through every pair in the map
+    // pair.first is the string name, pair.second is the integer ID
+    for (const auto& pair : mBookMap) {
+        if (pair.second == bookId) {
+            return pair.first; // Success: Return the string name wrapped in an optional
+        }
+    }
+    return std::nullopt; // The ID wasn't found in the map
+}
+

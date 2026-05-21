@@ -1,6 +1,6 @@
 #include "VerseFinder.hpp"
 #include <iostream>
-#include "bookmap.hpp"
+#include "BookMap.hpp"
 
 
 

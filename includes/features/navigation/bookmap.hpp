@@ -12,6 +12,8 @@ class BookIdMap
      * @return std::optional<int> The integer ID if found; std::nullopt if unknown.
      */
     std::optional<int> getBookID(const std::string bookName);
+
+     std::optional<std::string> getBookName(const int bookId);
  
     private:
     // The master cross-reference translation table
