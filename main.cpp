@@ -10,10 +10,10 @@ using std::endl;
 
 
 int main() {
-    // Execution path resolution utilizing local working directory outputs
-    // std::string dbPath = "holybible.db";
+    // // Execution path resolution utilizing local working directory outputs
+    // std::string dbPath = "kjvbible.db";
 
-    // Initialize database handle resources
+    // //Initialize database handle resources
     // SqliteDb db(dbPath);
 
     // // Instantiate execution abstraction layer

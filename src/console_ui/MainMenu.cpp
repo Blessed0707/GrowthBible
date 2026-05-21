@@ -164,7 +164,7 @@ bool MainMenu::verseFinder()
     }
 
     //create a db and input it into verse finder
-    SqliteDb bibleDb("holybible.db");
+    SqliteDb bibleDb("kjvbible.db");
     VerseFinder find(bibleDb);
     if(!find.fetchVerse(book,chapter,verseNum))
     {

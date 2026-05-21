@@ -71,8 +71,8 @@ add_custom_command(TARGET MyExecutable POST_BUILD
 
 add_custom_command(TARGET MyExecutable POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/features/sqlite/holybible.db"
-    "$<TARGET_FILE_DIR:MyExecutable>/holybible.db"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/features/sqlite/kjvbible.db"
+    "$<TARGET_FILE_DIR:MyExecutable>/kjvbible.db"
 )
 
 add_custom_command(TARGET TestExecutable POST_BUILD
@@ -83,8 +83,8 @@ add_custom_command(TARGET TestExecutable POST_BUILD
 
 add_custom_command(TARGET TestExecutable POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/features/sqlite/holybible.db"
-    "$<TARGET_FILE_DIR:TestExecutable>/holybible.db"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/features/sqlite/kjvbible.db"
+    "$<TARGET_FILE_DIR:TestExecutable>/kjvbible.db"
 )
 
 
