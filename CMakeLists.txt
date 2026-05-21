@@ -14,6 +14,7 @@ file(GLOB_RECURSE SRC_FILES
     "src/*.cpp" 
     "src/features/verse/*.cpp"
     "src/features/sqlite/*.cpp"
+    "src/features/navigation/*.cpp"
 )
 
 # 2. CRITICAL FIX: Explicitly append the sqlite3.c engine using its absolute path
@@ -33,6 +34,8 @@ target_include_directories(MyExecutable PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/sqlite_engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/sqlite"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
+
 
 )
 
@@ -48,7 +51,7 @@ target_include_directories(TestExecutable PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/sqlite_engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/sqlite"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
-
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
 )
 
 
