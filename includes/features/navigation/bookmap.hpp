@@ -13,7 +13,7 @@ class BookIdMap
      */
     std::optional<int> getBookID(const std::string bookName);
 
-     std::optional<std::string> getBookName(const int bookId);
+    std::optional<std::string> getBookName(const int bookId);
  
     private:
     // The master cross-reference translation table
