@@ -23,18 +23,18 @@ const std::unordered_map<std::string, int> bookMap = {
 
 VerseFinder::VerseFinder(SqliteDb& db) : mDbRef(db) {}
 
-void VerseFinder::fetchVerse(const std::string& bookName, int chapter, int verseNum) {
+bool VerseFinder::fetchVerse(const std::string& bookName, int chapter, int verseNum, bool silent) {
     // Verify database connection state before attempting execution
     if (!mDbRef.isOpen()) {
         std::cerr << "[VerseFinder] Error: Database connection is inactive." << std::endl;
-        return;
+        return false;
     }
 
     // Resolve string title to internal integer tracking ID
     auto it = bookMap.find(bookName);
     if (it == bookMap.end()) {
         std::cerr << "[VerseFinder] Error: Book '" << bookName << "' not supported by lookup mapping." << std::endl;
-        return;
+        return false;
     }
     int bookId = it->second;
 
@@ -46,7 +46,7 @@ void VerseFinder::fetchVerse(const std::string& bookName, int chapter, int verse
     int prepareResult = sqlite3_prepare_v2(mDbRef.getNativeHandle(), sql.c_str(), -1, &stmt, nullptr);
     if (prepareResult != SQLITE_OK) {
         std::cerr << "[VerseFinder] SQL Error: Failed to compile statement handle." << std::endl;
-        return;
+        return false;
     }
 
     // Bind execution parameters to 1-indexed placeholder positions
@@ -66,10 +66,15 @@ void VerseFinder::fetchVerse(const std::string& bookName, int chapter, int verse
         std::cout << rawText << std::endl;
         std::cout << "========================================\n" << std::endl;
     } else {
-        std::cout << "[VerseFinder] Target record address out of bounds (" 
-                  << bookName << " " << chapter << ":" << verseNum << ")." << std::endl;
+        if (!silent)
+        {
+            std::cout << "[VerseFinder] Target record address out of bounds (" 
+                << bookName << " " << chapter << ":" << verseNum << ")." << std::endl;
+        }
+        return false;
     }
 
     // Deallocate instruction memory allocated during statement preparation
     sqlite3_finalize(stmt);
+    return true;
 }

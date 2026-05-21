@@ -2,6 +2,8 @@
 #include <string>
 #include "sqlite.hpp"
 
+
+
 /**
  * @class VerseFinder
  * @brief Handles querying and extracting scripture text from the database.
@@ -9,7 +11,7 @@
 
 
 class VerseFinder {
-private:
+protected:
     SqliteDb& mDbRef; ///< Reference to the active database connection wrapper
 
 public:
@@ -25,6 +27,6 @@ public:
      * @param chapter The target chapter index.
      * @param verseNum The target verse index.
      */
-    void fetchVerse(const std::string& bookName, int chapter, int verseNum);
+    bool fetchVerse(const std::string& bookName, int chapter, int verseNum,bool silent = false);
 };
 
