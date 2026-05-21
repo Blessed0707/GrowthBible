@@ -1,20 +1,20 @@
 #include <iostream>
-
-#include "VerseFinder.hpp"
-
-using std::cout;
-using std::endl;
 #include "sqlite.hpp"
 #include "VerseFinder.hpp"
 #include "WordSearch.hpp"
+#include "MainMenu.hpp"
+
+using std::cout;
+using std::endl;
+
 
 
 int main() {
     // Execution path resolution utilizing local working directory outputs
-    std::string dbPath = "holybible.db";
+    // std::string dbPath = "holybible.db";
 
     // Initialize database handle resources
-    SqliteDb db(dbPath);
+    // SqliteDb db(dbPath);
 
     // // Instantiate execution abstraction layer
     // VerseFinder finder(db);
@@ -43,9 +43,12 @@ int main() {
     // finder.fetchVerse("Hebrews", 11, 1);
     // finder.fetchVerse("Revelation", 21, 4);
 
-    WordSearch search(db);
-    search.searchWord("John");
+    
+    MainMenu ui;
+    while(!ui.diplayMenu())
+    {
 
+    }
     return 0;
 }
 

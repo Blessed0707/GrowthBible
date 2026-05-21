@@ -19,7 +19,7 @@ const std::unordered_map<std::string, int> BookIdMap::mBookMap = {
     {"Jude", 64}, {"Revelation", 65}
 };
 
-std::optional<int> BookIdMap::getBookID(const std::string bookName) {
+std::optional<int> BookIdMap::getBookID(const std::string& bookName) {
     auto it = mBookMap.find(bookName);
     if (it != mBookMap.end()) {
         return it->second; // Return the found book ID

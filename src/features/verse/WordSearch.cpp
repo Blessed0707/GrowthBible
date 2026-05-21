@@ -7,6 +7,7 @@ WordSearch::WordSearch(SqliteDb& db) : mDbRef(db) {} //initialze the database re
 bool WordSearch::searchWord(const std::string& word)
 {
     BookIdMap map; //create a map
+
     // Verify database connection state before attempting execution
     if(!mDbRef.isOpen())
     {
@@ -15,6 +16,7 @@ bool WordSearch::searchWord(const std::string& word)
     }
 
     // Parameterized SQL string targeting schema column identifiers
+    
     // The '%' || ? || '%' syntax concatenates the wildcard characters with the search term, enabling substring matching
     std::string sql = "SELECT Book, Chapter, Versecount, verse FROM bible WHERE verse LIKE '%' || ? || '%';";
     sqlite3_stmt* stmt = nullptr;

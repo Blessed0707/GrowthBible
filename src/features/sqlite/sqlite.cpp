@@ -1,9 +1,8 @@
 #include "sqlite.hpp"
 #include <iostream>
 
-// ============================================================================
+
 // CONSTRUCTOR: This runs the exact moment a SqliteDatabase object is created
-// ============================================================================
 SqliteDb::SqliteDb(const std::string& dbPath) : mpDB(nullptr), mIsOpen(false) {
     
     // sqlite3_open takes two arguments:
@@ -28,9 +27,7 @@ SqliteDb::SqliteDb(const std::string& dbPath) : mpDB(nullptr), mIsOpen(false) {
     }
 }
 
-// ============================================================================
 // DESTRUCTOR: This runs automatically when the object dies or the program exits
-// ============================================================================
 SqliteDb::~SqliteDb() {
     // We only need to disconnect if we actually have an active connection pointer
     if (mpDB != nullptr) {
@@ -41,3 +38,5 @@ SqliteDb::~SqliteDb() {
         std::cout << "[DATABASE] Connection closed cleanly." << std::endl;
     }
 }
+
+

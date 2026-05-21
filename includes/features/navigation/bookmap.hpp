@@ -3,7 +3,7 @@
 #include <string>
 #include <optional>
 
-class BookIdMap
+class BookIdMap //
 {
     public:
     /**
@@ -11,7 +11,7 @@ class BookIdMap
      * @param bookName The string name of the book (e.g., "Genesis").
      * @return std::optional<int> The integer ID if found; std::nullopt if unknown.
      */
-    std::optional<int> getBookID(const std::string bookName);
+    std::optional<int> getBookID(const std::string& bookName);
 
     std::optional<std::string> getBookName(const int bookId);
  
