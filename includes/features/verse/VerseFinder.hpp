@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "sqlite.hpp"
+#include "bookmap.hpp"
 
 
 
@@ -10,10 +11,9 @@
  */
 
 
-class VerseFinder {
+class VerseFinder : public BookIdMap {
 protected:
     SqliteDb& mDbRef; ///< Reference to the active database connection wrapper
-
 public:
     /**
      * @brief Constructs a VerseFinder instance bound to an open database wrapper.
@@ -28,5 +28,6 @@ public:
      * @param verseNum The target verse index.
      */
     bool fetchVerse(const std::string& bookName, int chapter, int verseNum,bool silent = false);
+    bool fetchChapter(const std::string& bookName, int chapter);
 };
 

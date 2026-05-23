@@ -14,6 +14,8 @@ file(GLOB_RECURSE SRC_FILES
     "src/*.cpp" 
     "src/features/verse/*.cpp"
     "src/features/sqlite/*.cpp"
+    "src/features/navigation/*.cpp"
+    "src/features/chapter/*.cpp"
 )
 
 # 2. CRITICAL FIX: Explicitly append the sqlite3.c engine using its absolute path
@@ -26,14 +28,16 @@ file(GLOB_RECURSE TEST_FILES "src_tests/*.cpp")
 # =================================================================
 # TARGET 1: THE MAIN APP
 # =================================================================
-add_executable(MyExecutable main.cpp ${SRC_FILES})
+add_executable(MyExecutable main.cpp ${SRC_FILES}
+    src/features/verse/WordSearch.cpp)
 
 target_include_directories(MyExecutable PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes"
     "${CMAKE_CURRENT_SOURCE_DIR}/sqlite_engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/sqlite"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
-
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/chapter" 
 )
 
 
@@ -48,7 +52,8 @@ target_include_directories(TestExecutable PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/sqlite_engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/sqlite"
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
-
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/chapter" 
 )
 
 
