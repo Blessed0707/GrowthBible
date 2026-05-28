@@ -2,7 +2,7 @@
 #include "bookmap.hpp"
 
 ChapterFinder::ChapterFinder(SqliteDb& db) : VerseFinder(db) {}
-void ChapterFinder::fetchSpecificChapter()
+void ChapterFinder::getChapter()
 {
     std::string book;
     int chapter = 0;

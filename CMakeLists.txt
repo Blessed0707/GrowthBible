@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
 
-# CRITICAL FIX: Explicitly enable BOTH CXX (C++) and C languages at the project level
 project(MultiFileProject VERSION 1.0 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -9,19 +8,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # =================================================================
 # GLOBAL FILE COLLECTIONS
 # =================================================================
-# 1. Collect all your C++ files recursively
 file(GLOB_RECURSE SRC_FILES 
     "src/*.cpp" 
     "src/features/verse/*.cpp"
     "src/features/sqlite/*.cpp"
     "src/features/navigation/*.cpp"
     "src/features/chapter/*.cpp"
+    "src/features/wordsearch/*.cpp"
 )
 
-# 2. CRITICAL FIX: Explicitly append the sqlite3.c engine using its absolute path
 list(APPEND SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite_engine/sqlite3.c")
 
-# Collect your test logic files (test.cpp, etc.)
 file(GLOB_RECURSE TEST_FILES "src_tests/*.cpp")
 
 
@@ -29,7 +26,8 @@ file(GLOB_RECURSE TEST_FILES "src_tests/*.cpp")
 # TARGET 1: THE MAIN APP
 # =================================================================
 add_executable(MyExecutable main.cpp ${SRC_FILES}
-    src/features/verse/WordSearch.cpp)
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/features/verse/WordSearch.cpp"
+)
 
 target_include_directories(MyExecutable PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes"
@@ -38,6 +36,7 @@ target_include_directories(MyExecutable PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/chapter" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/wordsearch" 
 )
 
 
@@ -54,11 +53,12 @@ target_include_directories(TestExecutable PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/verse" 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/navigation" 
     "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/chapter" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/includes/features/wordsearch" 
 )
 
 
 # =================================================================
-# FILE COPYING (This makes database paths generic)
+# FILE COPYING
 # =================================================================
 add_custom_command(TARGET MyExecutable POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

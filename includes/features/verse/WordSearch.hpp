@@ -8,8 +8,9 @@ class WordSearch : public VerseFinder {
 
     public:
         WordSearch(SqliteDb& db);
-        bool searchWord(const std::string& word);
+        void getSearchWord();
 
     private:
-
+        std::string highlightWord(const std::string& verse, const std::string& word);
+        bool searchWord(const std::string& word);
 };

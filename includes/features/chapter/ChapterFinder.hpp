@@ -15,7 +15,7 @@
  {
     public:
         ChapterFinder(SqliteDb& db);
-        void fetchSpecificChapter();
+        void getChapter();
     private:
 
  };

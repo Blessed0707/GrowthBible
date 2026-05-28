@@ -116,7 +116,28 @@ bool VerseFinder::fetchChapter(const std::string& bookName, int chapter) {
         anyResults = true;
     }
 
+    if (!anyResults) {
+        std::cout << "[ChapterFinder] Error: " << bookName << " chapter " 
+                  << chapter << " does not exist." << std::endl;
+    }
+
     std::cout << "========================================\n" << std::endl;
     sqlite3_finalize(stmt);
     return anyResults;
+}
+
+
+void VerseFinder::getVerse()
+{
+    std::string book;
+    int chapter = 0;
+    int verse = 0;
+    std::cout << "Book: ";
+    std::cin >> book;
+    book[0] = toupper(book[0]); // capitalize first letter
+    std::cout << "Chapter: ";
+    std::cin >> chapter;
+    std::cout << "Verse: ";
+    std::cin >> verse;
+    fetchVerse(book, chapter, verse);
 }

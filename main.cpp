@@ -3,6 +3,7 @@
 #include "VerseFinder.hpp"
 #include "ChapterFinder.hpp"
 #include "DailyVerse.hpp"
+#include "WordSearch.hpp"
 
 int main() {
     // Execution path resolution utilizing local working directory outputs
@@ -17,14 +18,18 @@ int main() {
     //Instantiate daily verse handler
     DailyVerse dailyVerse(db);
 
-    //
+    //Instantiate chapter finder handler
     ChapterFinder chapterFinder(db);
 
+    //
+    WordSearch wordSearch(db);
+
+
     // Dispatch verification test routines
-    finder.fetchVerse("Genesis", 1, 1);
-    finder.fetchVerse("Revelation", 21, 4);
+    finder.getVerse();
     dailyVerse.RandomVerse();
-    chapterFinder.fetchSpecificChapter();
+    chapterFinder.getChapter();
+    wordSearch.getSearchWord();
     return 0;
 }
 
