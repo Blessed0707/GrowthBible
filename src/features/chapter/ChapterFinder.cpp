@@ -13,4 +13,3 @@ void ChapterFinder::getChapter()
     std::cin >> chapter;
     fetchChapter(book, chapter);
 }
-
