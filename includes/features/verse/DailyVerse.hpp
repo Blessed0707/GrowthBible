@@ -14,8 +14,8 @@ public:
     /**
      * @brief Fetches a random verse from the database.
      */
-    void RandomVerse();
+    void getRandomVerse();
 
 private:
-    
+    SqliteDb& mDbRef;
 };

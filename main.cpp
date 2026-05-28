@@ -1,7 +1,6 @@
 #include <iostream>
 #include "sqlite.hpp"
 #include "VerseFinder.hpp"
-<<<<<<< HEAD
 #include "WordSearch.hpp"
 #include "MainMenu.hpp"
 
@@ -9,11 +8,6 @@ using std::cout;
 using std::endl;
 
 
-=======
-#include "ChapterFinder.hpp"
-#include "DailyVerse.hpp"
-#include "WordSearch.hpp"
->>>>>>> d6f8b7530a3e1420d7316962cf45f95eeaf01bc6
 
 int main() {
     // // Execution path resolution utilizing local working directory outputs
@@ -25,7 +19,6 @@ int main() {
     // // Instantiate execution abstraction layer
     // VerseFinder finder(db);
 
-<<<<<<< HEAD
     // // Dispatch verification test routines
     // finder.fetchVerse("Genesis", 1, 1);
     // finder.fetchVerse("Exodus", 20, 3);
@@ -56,23 +49,6 @@ int main() {
     {
 
     }
-=======
-    //Instantiate daily verse handler
-    DailyVerse dailyVerse(db);
-
-    //Instantiate chapter finder handler
-    ChapterFinder chapterFinder(db);
-
-    //
-    WordSearch wordSearch(db);
-
-
-    // Dispatch verification test routines
-    finder.getVerse();
-    dailyVerse.RandomVerse();
-    chapterFinder.getChapter();
-    wordSearch.getSearchWord();
->>>>>>> d6f8b7530a3e1420d7316962cf45f95eeaf01bc6
     return 0;
 }
 
