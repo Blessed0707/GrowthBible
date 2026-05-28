@@ -30,6 +30,8 @@ int main() {
     dailyVerse.RandomVerse();
     chapterFinder.getChapter();
     wordSearch.getSearchWord();
+
+    std::cout << "Exiting application." << std::endl;
     return 0;
 }
 
