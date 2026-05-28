@@ -3,7 +3,7 @@
 #include <string>
 #include <optional>
 
-class BookIdMap //
+class BookIdMap
 {
     public:
     /**
@@ -11,14 +11,10 @@ class BookIdMap //
      * @param bookName The string name of the book (e.g., "Genesis").
      * @return std::optional<int> The integer ID if found; std::nullopt if unknown.
      */
-<<<<<<< HEAD
-    std::optional<int> getBookID(const std::string& bookName);
-=======
 
     std::optional<int> getBookID(const std::string bookName);
->>>>>>> d6f8b7530a3e1420d7316962cf45f95eeaf01bc6
 
-    std::optional<std::string> getBookName(const int bookId);
+     std::optional<std::string> getBookName(const int bookId);
  
     protected:
     // The master cross-reference translation table
