@@ -29,10 +29,6 @@ public:
      * @param chapter The target chapter index.
      * @param verseNum The target verse index.
      */
-<<<<<<< HEAD
-    bool fetchVerse(const std::string& bookName, int chapter, int verseNum);
-=======
     void getVerse();
->>>>>>> d6f8b7530a3e1420d7316962cf45f95eeaf01bc6
 };
 
