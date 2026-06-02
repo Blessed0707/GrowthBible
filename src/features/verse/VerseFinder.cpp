@@ -54,7 +54,7 @@ bool VerseFinder::fetchVerse(const std::string& bookName, int chapter, int verse
         std::cout << "========================================\n" << std::endl;
 
         // After printing the verse, ask about full chapter
-        if(silent)
+        if(!silent)
         {
             std::cout << "Read full chapter? (y/n): ";
             char choice;

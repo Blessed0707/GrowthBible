@@ -14,14 +14,14 @@
 class VerseFinder : public BookIdMap {
 protected:
     SqliteDb& mDbRef; ///< Reference to the active database connection wrapper
-    bool fetchVerse(const std::string& bookName, int chapter, int verseNum,bool silent = false);
-    bool fetchChapter(const std::string& bookName, int chapter);
 public:
     /**
      * @brief Constructs a VerseFinder instance bound to an open database wrapper.
      * @param db Reference to an initialized SqliteDb object.
      */
     VerseFinder(SqliteDb& db);
+    bool fetchVerse(const std::string& bookName, int chapter, int verseNum,bool silent = false);
+    bool fetchChapter(const std::string& bookName, int chapter);
 
     /**
      * @brief Executes a compiled SQL query to retrieve and display a specific scripture verse.
