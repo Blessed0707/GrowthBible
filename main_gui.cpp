@@ -28,6 +28,9 @@ private:
     wxTextCtrl* mVerseInput;
     wxTextCtrl* mOutput;
 
+    wxTextCtrl* mChapterBookInput;
+    wxTextCtrl* mChapterNumInput;
+
     void OnFetchVerse(wxCommandEvent& event);
     void OnRandomVerse(wxCommandEvent& event);
     void OnSearchWord(wxCommandEvent& event);
@@ -88,6 +91,18 @@ MainWindow::MainWindow(const wxString& title)
 
     mainSizer->Add(btnSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 10);
 
+    // Row 3: Chapter inputs
+    wxBoxSizer* chapterInputSizer = new wxBoxSizer(wxHORIZONTAL);
+    chapterInputSizer->Add(new wxStaticText(panel, wxID_ANY, "Chapter Book:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+    mChapterBookInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(150, -1));
+    chapterInputSizer->Add(mChapterBookInput, 0, wxRIGHT, 10);
+
+    chapterInputSizer->Add(new wxStaticText(panel, wxID_ANY, "Chapter:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+    mChapterNumInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(50, -1));
+    chapterInputSizer->Add(mChapterNumInput, 0, wxRIGHT, 10);
+
+    mainSizer->Add(chapterInputSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 10);
+
     // Output text area
     mOutput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize,
                               wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2);
@@ -105,6 +120,7 @@ void MainWindow::OnFetchVerse(wxCommandEvent& event) {
     std::string book = mBookInput->GetValue().ToStdString();
     int chapter = wxAtoi(mChapterInput->GetValue());
     int verse = wxAtoi(mVerseInput->GetValue());
+
 
     if (book.empty() || chapter == 0 || verse == 0) {
         mOutput->SetValue("Please enter a book, chapter, and verse.");
@@ -134,15 +150,15 @@ void MainWindow::OnSearchWord(wxCommandEvent& event) {
 
     std::ostringstream buffer;
     std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
-    mWordSearch->getSearchWord();
+    mWordSearch->searchWord(word.ToStdString()); // NOT getSearchWord()
     std::cout.rdbuf(old);
 
     mOutput->SetValue(buffer.str());
 }
 
 void MainWindow::OnFetchChapter(wxCommandEvent& event) {
-    std::string book = mBookInput->GetValue().ToStdString();
-    int chapter = wxAtoi(mChapterInput->GetValue());
+    std::string book = mChapterBookInput->GetValue().ToStdString();
+    int chapter = wxAtoi(mChapterNumInput->GetValue());
 
     if (book.empty() || chapter == 0) {
         mOutput->SetValue("Please enter a book and chapter.");
@@ -151,7 +167,7 @@ void MainWindow::OnFetchChapter(wxCommandEvent& event) {
 
     std::ostringstream buffer;
     std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
-    mChapterFinder->getChapter();
+    mChapterFinder->fetchChapter(book, chapter);
     std::cout.rdbuf(old);
 
     mOutput->SetValue(buffer.str());
