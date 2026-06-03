@@ -75,16 +75,16 @@ MainWindow::MainWindow(const wxString& title)
     mVerseInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(50, -1));
     inputSizer->Add(mVerseInput, 0, wxRIGHT, 10);
 
-    wxButton* fetchVerseBtn = new wxButton(panel, wxID_ANY, "Fetch Verse");
+    wxButton* fetchVerseBtn = new wxButton(panel, wxID_ANY, "Read Verse");
     inputSizer->Add(fetchVerseBtn, 0);
 
     mainSizer->Add(inputSizer, 0, wxALL, 10);
 
     // Row 2: Action buttons
     wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxButton* randomBtn = new wxButton(panel, wxID_ANY, "Random Verse");
-    wxButton* searchBtn = new wxButton(panel, wxID_ANY, "Search Word");
-    wxButton* chapterBtn = new wxButton(panel, wxID_ANY, "Fetch Chapter");
+    wxButton* randomBtn = new wxButton(panel, wxID_ANY, "Verse of the Day");
+    wxButton* searchBtn = new wxButton(panel, wxID_ANY, "Word Search");
+    wxButton* chapterBtn = new wxButton(panel, wxID_ANY, "Read Chapter");
     btnSizer->Add(randomBtn, 0, wxRIGHT, 10);
     btnSizer->Add(searchBtn, 0, wxRIGHT, 10);
     btnSizer->Add(chapterBtn, 0);
@@ -121,7 +121,6 @@ void MainWindow::OnFetchVerse(wxCommandEvent& event) {
     int chapter = wxAtoi(mChapterInput->GetValue());
     int verse = wxAtoi(mVerseInput->GetValue());
 
-
     if (book.empty() || chapter == 0 || verse == 0) {
         mOutput->SetValue("Please enter a book, chapter, and verse.");
         return;
@@ -129,10 +128,10 @@ void MainWindow::OnFetchVerse(wxCommandEvent& event) {
 
     std::ostringstream buffer;
     std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
-    mFinder->fetchVerse(book, chapter, verse, true); // fetchVerse NOT getVerse
+    mFinder->fetchVerse(book, chapter, verse, true);
     std::cout.rdbuf(old);
 
-    mOutput->SetValue(buffer.str());
+    mOutput->SetValue(wxString::FromUTF8(buffer.str()));
 }
 
 void MainWindow::OnRandomVerse(wxCommandEvent& event) {
@@ -141,7 +140,7 @@ void MainWindow::OnRandomVerse(wxCommandEvent& event) {
     mDailyVerse->RandomVerse();
     std::cout.rdbuf(old);
 
-    mOutput->SetValue(buffer.str());
+    mOutput->SetValue(wxString::FromUTF8(buffer.str()));
 }
 
 void MainWindow::OnSearchWord(wxCommandEvent& event) {
@@ -153,7 +152,7 @@ void MainWindow::OnSearchWord(wxCommandEvent& event) {
     mWordSearch->searchWord(word.ToStdString()); // NOT getSearchWord()
     std::cout.rdbuf(old);
 
-    mOutput->SetValue(buffer.str());
+    mOutput->SetValue(wxString::FromUTF8(buffer.str()));
 }
 
 void MainWindow::OnFetchChapter(wxCommandEvent& event) {
@@ -170,5 +169,5 @@ void MainWindow::OnFetchChapter(wxCommandEvent& event) {
     mChapterFinder->fetchChapter(book, chapter);
     std::cout.rdbuf(old);
 
-    mOutput->SetValue(buffer.str());
+    mOutput->SetValue(wxString::FromUTF8(buffer.str()));
 }
