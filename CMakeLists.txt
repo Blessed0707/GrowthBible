@@ -112,6 +112,12 @@ add_custom_command(TARGET GrowthBibleGUI POST_BUILD
     "$<TARGET_FILE_DIR:GrowthBibleGUI>/holybible.db"
 )
 
+add_custom_target(run
+    COMMAND GrowthBibleGUI
+    DEPENDS GrowthBibleGUI
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
 # =================================================================
 # SYSTEM LINKING
 # =================================================================

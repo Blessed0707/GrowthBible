@@ -1,3 +1,4 @@
+#include <wx/statline.h>
 #include <wx/wx.h>
 #include <wx/filefn.h>
 #include <sstream>
@@ -27,9 +28,18 @@ private:
     wxTextCtrl* mChapterInput;
     wxTextCtrl* mVerseInput;
     wxTextCtrl* mOutput;
-
     wxTextCtrl* mChapterBookInput;
     wxTextCtrl* mChapterNumInput;
+
+    // Colors
+    wxColour mBgColor      = wxColour(245, 247, 250);
+    wxColour mAccentColor  = wxColour(67, 97, 238);
+    wxColour mWhite        = wxColour(255, 255, 255);
+    wxColour mTextColor    = wxColour(30, 30, 30);
+    wxColour mBorderColor  = wxColour(200, 200, 210);
+
+    wxButton* MakeButton(wxPanel* panel, const wxString& label);
+    wxTextCtrl* MakeInput(wxPanel* panel, const wxString& hint, int width);
 
     void OnFetchVerse(wxCommandEvent& event);
     void OnRandomVerse(wxCommandEvent& event);
@@ -49,8 +59,25 @@ bool MyApp::OnInit() {
     return true;
 }
 
+wxButton* MainWindow::MakeButton(wxPanel* panel, const wxString& label) {
+    wxButton* btn = new wxButton(panel, wxID_ANY, label, wxDefaultPosition, wxSize(140, 36));
+    btn->SetBackgroundColour(mAccentColor);
+    btn->SetForegroundColour(mWhite);
+    btn->SetFont(wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    return btn;
+}
+
+wxTextCtrl* MainWindow::MakeInput(wxPanel* panel, const wxString& hint, int width) {
+    wxTextCtrl* input = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(width, 32));
+    input->SetHint(hint);
+    input->SetFont(wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    input->SetBackgroundColour(mWhite);
+    input->SetForegroundColour(mTextColor);
+    return input;
+}
+
 MainWindow::MainWindow(const wxString& title)
-    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600))
+    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(900, 650))
 {
     mDb = new SqliteDb("holybible.db");
     mFinder = new VerseFinder(*mDb);
@@ -58,55 +85,79 @@ MainWindow::MainWindow(const wxString& title)
     mWordSearch = new WordSearch(*mDb);
     mChapterFinder = new ChapterFinder(*mDb);
 
+    SetBackgroundColour(mBgColor);
+
     wxPanel* panel = new wxPanel(this);
+    panel->SetBackgroundColour(mBgColor);
+
     wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
-    // Row 1: Book, Chapter, Verse inputs
-    wxBoxSizer* inputSizer = new wxBoxSizer(wxHORIZONTAL);
-    inputSizer->Add(new wxStaticText(panel, wxID_ANY, "Book:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    mBookInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(150, -1));
-    inputSizer->Add(mBookInput, 0, wxRIGHT, 10);
+    // Title
+    wxStaticText* title_label = new wxStaticText(panel, wxID_ANY, "Growth Bible");
+    title_label->SetFont(wxFont(22, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    title_label->SetForegroundColour(mAccentColor);
+    mainSizer->Add(title_label, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 15);
 
-    inputSizer->Add(new wxStaticText(panel, wxID_ANY, "Chapter:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    mChapterInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(50, -1));
-    inputSizer->Add(mChapterInput, 0, wxRIGHT, 10);
+    // Divider
+    wxStaticLine* line1 = new wxStaticLine(panel);
+    mainSizer->Add(line1, 0, wxEXPAND | wxLEFT | wxRIGHT, 20);
+    mainSizer->AddSpacer(10);
 
-    inputSizer->Add(new wxStaticText(panel, wxID_ANY, "Verse:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    mVerseInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(50, -1));
-    inputSizer->Add(mVerseInput, 0, wxRIGHT, 10);
+    // Row 1: Verse lookup
+    wxStaticText* verseLabel = new wxStaticText(panel, wxID_ANY, "Verse Lookup");
+    verseLabel->SetFont(wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    verseLabel->SetForegroundColour(mTextColor);
+    mainSizer->Add(verseLabel, 0, wxLEFT, 25);
+    mainSizer->AddSpacer(5);
 
-    wxButton* fetchVerseBtn = new wxButton(panel, wxID_ANY, "Read Verse");
-    inputSizer->Add(fetchVerseBtn, 0);
+    wxBoxSizer* verseSizer = new wxBoxSizer(wxHORIZONTAL);
+    mBookInput = MakeInput(panel, "Book", 160);
+    mChapterInput = MakeInput(panel, "Chapter", 70);
+    mVerseInput = MakeInput(panel, "Verse", 70);
+    wxButton* fetchVerseBtn = MakeButton(panel, "Read Verse");
 
-    mainSizer->Add(inputSizer, 0, wxALL, 10);
+    verseSizer->Add(mBookInput, 0, wxRIGHT, 8);
+    verseSizer->Add(mChapterInput, 0, wxRIGHT, 8);
+    verseSizer->Add(mVerseInput, 0, wxRIGHT, 8);
+    verseSizer->Add(fetchVerseBtn, 0);
+    mainSizer->Add(verseSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 25);
 
-    // Row 2: Action buttons
+    // Row 2: Chapter lookup
+    wxStaticText* chapterLabel = new wxStaticText(panel, wxID_ANY, "Chapter Lookup");
+    chapterLabel->SetFont(wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    chapterLabel->SetForegroundColour(mTextColor);
+    mainSizer->Add(chapterLabel, 0, wxLEFT, 25);
+    mainSizer->AddSpacer(5);
+
+    wxBoxSizer* chapterSizer = new wxBoxSizer(wxHORIZONTAL);
+    mChapterBookInput = MakeInput(panel, "Book", 160);
+    mChapterNumInput = MakeInput(panel, "Chapter", 70);
+    wxButton* chapterBtn = MakeButton(panel, "Read Chapter");
+
+    chapterSizer->Add(mChapterBookInput, 0, wxRIGHT, 8);
+    chapterSizer->Add(mChapterNumInput, 0, wxRIGHT, 8);
+    chapterSizer->Add(chapterBtn, 0);
+    mainSizer->Add(chapterSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 25);
+
+    // Row 3: Action buttons
+    wxStaticLine* line2 = new wxStaticLine(panel);
+    mainSizer->Add(line2, 0, wxEXPAND | wxLEFT | wxRIGHT, 20);
+    mainSizer->AddSpacer(10);
+
     wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxButton* randomBtn = new wxButton(panel, wxID_ANY, "Verse of the Day");
-    wxButton* searchBtn = new wxButton(panel, wxID_ANY, "Word Search");
-    wxButton* chapterBtn = new wxButton(panel, wxID_ANY, "Read Chapter");
+    wxButton* randomBtn = MakeButton(panel, "Verse of the Day");
+    wxButton* searchBtn = MakeButton(panel, "Word Search");
     btnSizer->Add(randomBtn, 0, wxRIGHT, 10);
-    btnSizer->Add(searchBtn, 0, wxRIGHT, 10);
-    btnSizer->Add(chapterBtn, 0);
+    btnSizer->Add(searchBtn, 0);
+    mainSizer->Add(btnSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 25);
 
-    mainSizer->Add(btnSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 10);
-
-    // Row 3: Chapter inputs
-    wxBoxSizer* chapterInputSizer = new wxBoxSizer(wxHORIZONTAL);
-    chapterInputSizer->Add(new wxStaticText(panel, wxID_ANY, "Chapter Book:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    mChapterBookInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(150, -1));
-    chapterInputSizer->Add(mChapterBookInput, 0, wxRIGHT, 10);
-
-    chapterInputSizer->Add(new wxStaticText(panel, wxID_ANY, "Chapter:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    mChapterNumInput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(50, -1));
-    chapterInputSizer->Add(mChapterNumInput, 0, wxRIGHT, 10);
-
-    mainSizer->Add(chapterInputSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 10);
-
-    // Output text area
+    // Output area
     mOutput = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize,
                               wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH2);
-    mainSizer->Add(mOutput, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+    mOutput->SetFont(wxFont(11, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    mOutput->SetBackgroundColour(mWhite);
+    mOutput->SetForegroundColour(mTextColor);
+    mainSizer->Add(mOutput, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 25);
 
     panel->SetSizer(mainSizer);
 
@@ -149,10 +200,23 @@ void MainWindow::OnSearchWord(wxCommandEvent& event) {
 
     std::ostringstream buffer;
     std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
-    mWordSearch->searchWord(word.ToStdString()); // NOT getSearchWord()
+    mWordSearch->searchWord(word.ToStdString());
     std::cout.rdbuf(old);
 
-    mOutput->SetValue(wxString::FromUTF8(buffer.str()));
+    std::string result = buffer.str();
+    wxString wxResult = wxString::FromUTF8(result);
+    mOutput->SetValue(wxResult);
+
+    // Highlight searched word in red bold
+    wxString wxWord = word.Lower();
+    wxString lowerResult = wxResult.Lower();
+    int start = 0;
+    while ((start = lowerResult.find(wxWord, start)) != (int)wxString::npos) {
+        mOutput->SetStyle(start, start + wxWord.length(),
+            wxTextAttr(*wxRED, wxNullColour,
+                wxFont(11, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD)));
+        start += wxWord.length();
+    }
 }
 
 void MainWindow::OnFetchChapter(wxCommandEvent& event) {
